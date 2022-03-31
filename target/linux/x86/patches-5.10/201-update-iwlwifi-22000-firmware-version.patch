@@ -1,0 +1,13 @@
+Index: linux-5.10.108/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+===================================================================
+--- linux-5.10.108.orig/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ linux-5.10.108/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -57,7 +57,7 @@
+ #include "iwl-prph.h"
+ 
+ /* Highest firmware API version supported */
+-#define IWL_22000_UCODE_API_MAX	59
++#define IWL_22000_UCODE_API_MAX	71
+ 
+ /* Lowest firmware API version supported */
+ #define IWL_22000_UCODE_API_MIN	39
