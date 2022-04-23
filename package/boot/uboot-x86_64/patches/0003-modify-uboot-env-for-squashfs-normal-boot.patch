@@ -1,0 +1,33 @@
+Index: u-boot-2020.07-rc5/include/configs/efi-x86_payload.h
+===================================================================
+--- u-boot-2020.07-rc5/include/configs/efi-x86_payload.h
++++ u-boot-2020.07-rc5/include/configs/efi-x86_payload.h
+@@ -29,4 +29,14 @@
+ #define CONFIG_SYS_ATA_IDE1_OFFSET	0x170
+ #define CONFIG_ATAPI
+ 
++/*we define squashfs format as rootfs on an normal boot for openwrt*/
++#define X86_64_ENV \
++	"bootargs_mmc=root=/dev/mmcblk0p2 rootfstype=squashfs rw rootwait rootdelay=5 console=tty0 console=ttyS0,115200n8 noinitrd\0" \
++	"bootcmd_mmc=if fatload mmc 0:1 01000000 openwrt-x86_64-vmlinuz; then zboot 01000000; else echo kernel not foundi on mmc device;fi\0" \
++	\
++	"bootargs_blkdev=root=/dev/sda2 rootfstype=squashfs rw rootwait rootdelay=5 console=tty0 console=ttyS0,115200n8 noinitrd\0" \
++	"bootcmd_blkdev=if fatload sda1 0:1 01000000 openwrt-x86_64-vmlinuz; then zboot 01000000; else echo kernel not found on block device;fi\0" \
++	\
++	"bootcmd=setenv bootargs ${bootargs_mmc}; run bootcmd_mmc; setenv bootargs ${bootargs_blkdev}; run bootcmd_blkdev;\0"
++
+ #endif	/* __CONFIG_H */
+Index: u-boot-2020.07-rc5/include/configs/x86-common.h
+===================================================================
+--- u-boot-2020.07-rc5/include/configs/x86-common.h
++++ u-boot-2020.07-rc5/include/configs/x86-common.h
+@@ -112,7 +112,8 @@
+ 	"scriptaddr=0x7000000\0"			\
+ 	"kernel_addr_r=0x1000000\0"			\
+ 	"ramdisk_addr_r=0x4000000\0"			\
+-	"ramdiskfile=initramfs.gz\0"
++	"ramdiskfile=initramfs.gz\0"			\
++	X86_64_ENV
+ 
+ 
+ #define CONFIG_RAMBOOTCOMMAND				\

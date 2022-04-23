@@ -44,6 +44,15 @@ define Build/combined
 	$(CP) $(STAGING_DIR_IMAGE)/grub2/boot.img $@.boot/boot/grub/
 	$(CP) $(STAGING_DIR_IMAGE)/grub2/$(if $(filter $(1),efi),gpt,$(GRUB2_VARIANT))-core.img \
 		$@.boot/boot/grub/core.img
+
+	# I do not want to modify Makefile in grub2 folder, so if we enable uboot, uboot boot will replace
+	# grub, efi ...
+	$(if $(filter $(1),uboot),
+        $(CP) $(KDIR)/$(KERNEL_NAME) $@.boot/openwrt-x86_64-vmlinuz
+        $(CP) $(STAGING_DIR_IMAGE)/intel-x86_64-u-boot-payload.efi $@.boot/u-boot-payload.efi
+        echo "FS0:u-boot-payload.efi" > $@.boot/startup.nsh
+    )
+
 	$(if $(filter $(1),efi),
 		$(INSTALL_DIR) $@.boot/efi/boot
 		$(CP) $(STAGING_DIR_IMAGE)/grub2/boot$(if $(CONFIG_x86_64),x64,ia32).efi $@.boot/efi/boot/
@@ -118,14 +127,23 @@ define Device/Default
   IMAGE/combined-efi.vdi := grub-config efi | combined efi | grub-install efi | qemu-image vdi
   IMAGE/combined-efi.vmdk := grub-config efi | combined efi | grub-install efi | qemu-image vmdk
   IMAGE/combined-efi.vhdx := grub-config efi | combined efi | grub-install efi | qemu-image vhdx -o subformat=dynamic
+  # define U-boot generate.
+  IMAGE/combined-uboot.img := grub-config efi | combined efi uboot | grub-install efi | append-metadata
+  IMAGE/combined-uboot.img.gz := grub-config efi | combined efi uboot | grub-install efi | gzip | append-metadata
+  IMAGE/combined-uboot.vdi := grub-config efi | combined efi uboot | grub-install efi | qemu-image vdi
+  IMAGE/combined-uboot.vmdk := grub-config efi | combined efi uboot | grub-install efi | qemu-image vmdk
+
+  
   ifeq ($(CONFIG_TARGET_IMAGES_GZIP),y)
     IMAGES-y := rootfs.img.gz
     IMAGES-$$(CONFIG_GRUB_IMAGES) += combined.img.gz
-    IMAGES-$$(CONFIG_GRUB_EFI_IMAGES) += combined-efi.img.gz
+    IMAGES-$$(CONFIG_GRUB_EFI_IMAGES) += combined-efi.img.gz	
+	IMAGES-$$(CONFIG_U_BOOT_IMAGES) += combined-uboot.img.gz
   else
     IMAGES-y := rootfs.img
     IMAGES-$$(CONFIG_GRUB_IMAGES) += combined.img
     IMAGES-$$(CONFIG_GRUB_EFI_IMAGES) += combined-efi.img
+	IMAGES-$$(CONFIG_U_BOOT_IMAGES) += combined-uboot.img
   endif
   KERNEL := kernel-bin
   KERNEL_INSTALL := 1
@@ -133,18 +151,22 @@ define Device/Default
   ifeq ($(CONFIG_ISO_IMAGES),y)
     ARTIFACTS-$$(CONFIG_GRUB_IMAGES) += image.iso
     ARTIFACTS-$$(CONFIG_GRUB_EFI_IMAGES) += image-efi.iso
+	IMAGES-$$(CONFIG_U_BOOT_IMAGES) += combined-uboot.iso
   endif
   ifeq ($(CONFIG_VDI_IMAGES),y)
     IMAGES-$$(CONFIG_GRUB_IMAGES) += combined.vdi
     IMAGES-$$(CONFIG_GRUB_EFI_IMAGES) += combined-efi.vdi
+	IMAGES-$$(CONFIG_U_BOOT_IMAGES) += combined-uboot.vdi
   endif
   ifeq ($(CONFIG_VMDK_IMAGES),y)
     IMAGES-$$(CONFIG_GRUB_IMAGES) += combined.vmdk
     IMAGES-$$(CONFIG_GRUB_EFI_IMAGES) += combined-efi.vmdk
+	IMAGES-$$(CONFIG_U_BOOT_IMAGES) += combined-uboot.vmdk
   endif
   ifeq ($(CONFIG_VHDX_IMAGES),y)
     IMAGES-$$(CONFIG_GRUB_IMAGES) += combined.vhdx
     IMAGES-$$(CONFIG_GRUB_EFI_IMAGES) += combined-efi.vhdx
+	IMAGES-$$(CONFIG_U_BOOT_IMAGES) += combined-uboot.vhdx
   endif
   IMAGES := $$(IMAGES-y)
   ARTIFACTS := $$(ARTIFACTS-y)

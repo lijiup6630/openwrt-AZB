@@ -211,7 +211,15 @@ menu "Target Images"
 		select PACKAGE_grub2-efi
 		select PACKAGE_grub2-bios-setup
 		select PACKAGE_kmod-fs-vfat
+		select PACKAGE_u-boot-x86_64
 		default y
+
+config U_BOOT_IMAGES
+		bool "Build uboot images (Linux x86_64 host only)"
+		depends on TARGET_x86_64
+		depends on TARGET_ROOTFS_EXT4FS || TARGET_ROOTFS_JFFS2 || TARGET_ROOTFS_SQUASHFS		
+		select PACKAGE_kmod-fs-vfat
+		default n
 
 	config GRUB_CONSOLE
 		bool "Use Console Terminal (in addition to Serial)"
