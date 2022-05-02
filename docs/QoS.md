@@ -83,3 +83,7 @@ Accepted connection from 192.168.2.237, port 43146
 ```
 
 server接收到的数据基本上为100左右。软件实现有点小误差。
+
+
+
+
