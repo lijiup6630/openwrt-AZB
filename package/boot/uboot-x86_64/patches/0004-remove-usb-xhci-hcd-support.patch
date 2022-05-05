@@ -1,12 +1,10 @@
 Index: u-boot-2020.07-rc5/configs/efi-x86_payload64_defconfig
 ===================================================================
---- u-boot-2020.07-rc5.orig/configs/efi-x86_payload64_defconfig	2022-03-10 23:55:04.000000000 +0800
-+++ u-boot-2020.07-rc5/configs/efi-x86_payload64_defconfig	2022-03-10 23:55:24.662091622 +0800
-@@ -40,3 +40,7 @@
+--- u-boot-2020.07-rc5.orig/configs/efi-x86_payload64_defconfig
++++ u-boot-2020.07-rc5/configs/efi-x86_payload64_defconfig
+@@ -40,3 +40,5 @@ CONFIG_SYSCON=y
  CONFIG_EFI=y
  CONFIG_EFI_STUB=y
  CONFIG_EFI_STUB_64BIT=y
 +CONFIG_USB_XHCI_HCD=n
 +CONFIG_USB_XHCI_PCI=n
-+
-+
