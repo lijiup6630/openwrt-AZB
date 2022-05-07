@@ -1,0 +1,38 @@
+Index: u-boot-2020.07-rc5/include/configs/efi-x86_payload.h
+===================================================================
+--- u-boot-2020.07-rc5.orig/include/configs/efi-x86_payload.h
++++ u-boot-2020.07-rc5/include/configs/efi-x86_payload.h
+@@ -31,12 +31,26 @@
+ 
+ /*we define squashfs format as rootfs on an normal boot for openwrt*/
+ #define X86_64_ENV \
+-	"bootargs_mmc=root=/dev/mmcblk0p2 rootfstype=squashfs rw rootwait rootdelay=5 console=tty0 console=ttyS0,115200n8 noinitrd\0" \
+-	"bootcmd_mmc=if fatload mmc 0:1 01000000 openwrt-x86_64-vmlinuz; then zboot 01000000; else echo kernel not foundi on mmc device;fi\0" \
+-	\
+-	"bootargs_blkdev=root=/dev/sda2 rootfstype=squashfs rw rootwait rootdelay=5 console=tty0 console=ttyS0,115200n8 noinitrd\0" \
+-	"bootcmd_blkdev=if fatload sda1 0:1 01000000 openwrt-x86_64-vmlinuz; then zboot 01000000; else echo kernel not found on block device;fi\0" \
+-	\
+-	"bootcmd=setenv bootargs ${bootargs_mmc}; run bootcmd_mmc; setenv bootargs ${bootargs_blkdev}; run bootcmd_blkdev;\0"
++	"intel_load_addr=0x01000000\0" \
++        "intel_linux=vmlinuz-x86.img\0" \
++        \
++       \
++        \
++	"bootargs_rootfs_first=root=/dev/mmcblk0p2 rw rootfstype=ext4 rootdelay=5 crashkernel=140M rootwait console=tty0 console=ttyS0,115200n8\0" \
++	"bootargs_rootfs_second=root=/dev/mmcblk0p6 rw rootfstype=ext4 rootdelay=5 crashkernel=140M rootwait console=tty0 console=ttyS0,115200n8\0" \
++	"bootcmd_rootfs_first=ext4load mmc 0:2 ${intel_load_addr} ${intel_linux} ; zboot ${intel_load_addr}\0" \
++	"bootcmd_rootfs_second=ext4load mmc 0:6 ${intel_load_addr} ${intel_linux} ; zboot ${intel_load_addr}\0" \
++	"hc_boot_minios=if ext4load mmc 0:3 01000000 ${intel_linux}; then zboot ${intel_load_addr}; fi\0" \
++        "btargs_recovery=root=/dev/mmcblk0p3 rw rootfstype=ext4 rootdelay=5 rootwait console=tty0 console=ttyS0,115200n8 status=go_recovery\0" \
++	"btargs_update=root=/dev/mmcblk0p3 rw rootfstype=ext4 rootdelay=5 rootwait console=tty0 console=ttyS0,115200n8 status=go_update\0" \
++	"btargs_goback=root=/dev/mmcblk0p3 rw rootfstype=ext4 rootdelay=5 rootwait console=tty0 console=ttyS0,115200n8 status=go_back\0" \
++	"intel_need_recovery=if sys_reset; then setenv bootargs $btargs_recovery; run intel_boot_minios; fi\0" \
++	"intel_need_update=if ext4load mmc 0:1 01000000 /update_version; then setenv bootargs $btargs_update; run intel_boot_minios; fi\0" \
++	"intel_need_goback=if ext4load mmc 0:3 01000000 /device_wrong; then setenv bootargs ${btargs_goback};run intel_boot_minios; else ext4write mmc 0:3 00000000 /device_wrong 1; fi\0" \
++	"intel_boot_first=if ext4load mmc 0:2 01000000 boot_flag; then setenv bootargs ${bootargs_rootfs_first}; run bootcmd_rootfs_first; fi\0" \
++	"intel_boot_second=if ext4load mmc 0:6 01000000 boot_flag; then setenv bootargs ${bootargs_rootfs_second}; run bootcmd_rootfs_second; fi\0" \
++	"intel_boot_common=setenv bootargs ${bootargs_rootfs_first}; run bootcmd_rootfs_first\0" \
++	"bootcmd=run intel_need_recovery; run intel_need_update; run intel_need_goback; run intel_boot_first; run intel_boot_second; run intel_boot_common\0" \
++
+ 
+ #endif	/* __CONFIG_H */
