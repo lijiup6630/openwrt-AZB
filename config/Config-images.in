@@ -219,6 +219,7 @@ config U_BOOT_IMAGES
 		depends on TARGET_x86_64
 		depends on TARGET_ROOTFS_EXT4FS || TARGET_ROOTFS_JFFS2 || TARGET_ROOTFS_SQUASHFS		
 		select PACKAGE_kmod-fs-vfat
+		select PACKAGE_u-boot-intel-x86_64
 		default n
 
 	config GRUB_CONSOLE
