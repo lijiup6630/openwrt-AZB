@@ -101,3 +101,46 @@ root@OpenWrt:~# umount mount-temp/
 root@OpenWrt:~# ls mount-temp/
 ```
 
+#### 3. 测试在SSD上的支持
+
+##### (1) ext4
+
+```
+root@OpenWrt:/# mkfs.ext4 /dev/nvme0n1p3 
+mke2fs 1.46.5 (30-Dec-2021)
+/dev/nvme0n1p3 contains a LVM2_member file system
+Proceed anyway? (y,N) y
+Discarding device blocks: done                            
+Creating filesystem with 249657344 4k blocks and 62414848 inodes
+Filesystem UUID: 3095e49e-2002-4d8c-a7f7-a182240776a3
+Superblock backups stored on blocks: 
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+        4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968, 
+        102400000, 214990848
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (262144 blocks): done
+Writing superblocks and filesystem accounting information: done     
+
+root@OpenWrt:/# mount -t ext4 /dev/nvme0n1p3 /mnt/
+[ 1188.580176] EXT4-fs (nvme0n1p3): mounted filesystem with ordered data mode. Opts: (null)
+root@OpenWrt:/# touch /mnt/a.c
+root@OpenWrt:/# ls /mnt/
+a.c         lost+found
+```
+
+##### (2) vFAT
+
+```
+root@OpenWrt:/# mkfs.fat /dev/nvme0n1p3 
+mkfs.fat 4.2 (2021-01-31)
+Cannot initialize conversion from codepage 850 to ANSI_X3.4-1968: Success
+Cannot initialize conversion from ANSI_X3.4-1968 to codepage 850: Success
+Using internal CP850 conversion table
+root@OpenWrt:/# mount -t vfat /dev/nvme0n1p3 /mnt/
+root@OpenWrt:/# touch /mnt/a.c
+root@OpenWrt:/# ls /mnt
+a.c
+```
+
