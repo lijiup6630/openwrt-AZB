@@ -1,0 +1,39 @@
+From 01fa15be30538c9d52e23ff97b0d8f4e96482b28 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Wed, 22 Jun 2022 02:05:56 +0000
+Subject: [PATCH 1/2] hostapd build fix
+
+---
+ hostapd/Makefile        | 2 +-
+ wpa_supplicant/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hostapd/Makefile b/hostapd/Makefile
+index be9040e..9ff48c7 100644
+--- a/hostapd/Makefile
++++ b/hostapd/Makefile
+@@ -3,7 +3,7 @@ CC=gcc
+ endif
+ 
+ ifndef CFLAGS
+-CFLAGS = -MMD -O2 -Wall -Werror -g -D_GNU_SOURCE
++CFLAGS = -MMD -O2 -Wall -g -D_GNU_SOURCE
+ endif
+ 
+ ifdef LIBS
+diff --git a/wpa_supplicant/Makefile b/wpa_supplicant/Makefile
+index d2a2e68..8f44389 100644
+--- a/wpa_supplicant/Makefile
++++ b/wpa_supplicant/Makefile
+@@ -3,7 +3,7 @@ CC=gcc
+ endif
+ 
+ ifndef CFLAGS
+-CFLAGS = -MMD -O2 -Wall -Werror -g -D_GNU_SOURCE
++CFLAGS = -MMD -O2 -Wall -g -D_GNU_SOURCE
+ endif
+ 
+ ifdef LIBS
+-- 
+2.25.1
+

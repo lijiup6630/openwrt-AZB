@@ -1,0 +1,41 @@
+From f4e33436f5e2f2dd33b04cae4488d3fda8762d37 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Fri, 26 Aug 2022 08:14:20 +0000
+Subject: [PATCH 5/5] fix reset delay
+
+---
+ files/scripts/etc/hotplug.d/ieee80211/mac80211.hotplug | 2 +-
+ files/scripts/etc/wave/scripts/wave_factory_reset.sh   | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/files/scripts/etc/hotplug.d/ieee80211/mac80211.hotplug b/files/scripts/etc/hotplug.d/ieee80211/mac80211.hotplug
+index 3f9469a..e70e3b4 100644
+--- a/files/scripts/etc/hotplug.d/ieee80211/mac80211.hotplug
++++ b/files/scripts/etc/hotplug.d/ieee80211/mac80211.hotplug
+@@ -9,7 +9,7 @@ WIFI_FACTORY_CMD=/opt/intel/wave/scripts/wave_factory_reset.sh
+ 		wlan2_ready=`echo $radios | grep wlan2`
+ 
+ 		if [ -z "$wlan2_ready" ]; then
+-			sleep 1
++			sleep 5
+ 			radios=`ls /proc/net/mtlk/| grep "wlan[0|2|4]"`
+ 			continue
+ 		fi
+diff --git a/files/scripts/etc/wave/scripts/wave_factory_reset.sh b/files/scripts/etc/wave/scripts/wave_factory_reset.sh
+index b57a2ab..5931208 100755
+--- a/files/scripts/etc/wave/scripts/wave_factory_reset.sh
++++ b/files/scripts/etc/wave/scripts/wave_factory_reset.sh
+@@ -153,6 +153,10 @@ function full_reset(){
+ 		touch $UCI_DB_PATH/network
+ 	fi
+ 
++	if [ ! -f $ETC_CONFIG_WIRELESS_PATH ]; then
++                touch $ETC_CONFIG_WIRELESS_PATH
++        fi
++
+ 	# check if wave_trusted_store binary exists
+ 	if [ -f /usr/bin/wave_trusted_store ]; then
+ 		wave_trusted_store factory "$PROG"
+-- 
+2.25.1
+

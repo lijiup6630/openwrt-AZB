@@ -1,0 +1,27 @@
+From 51587ac52b1605c2d2b2fd7abbf0b169c655fef5 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Wed, 6 Jul 2022 07:16:09 +0000
+Subject: [PATCH 2/2] remove get_radio_info for build error
+
+---
+ src/drivers/driver.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/drivers/driver.h b/src/drivers/driver.h
+index 1be4d73..5a507ef 100644
+--- a/src/drivers/driver.h
++++ b/src/drivers/driver.h
+@@ -5477,8 +5477,8 @@ enum wpa_event_type {
+  * @radio_info: Pointer to radio_info structure (filled by the function)
+  * Returns: 0 on success, -1 on failure
+  */
+-int (*get_radio_info)(void *priv, struct intel_vendor_radio_info *radio_info);
+-
++//int (*get_radio_info)(void *priv, struct intel_vendor_radio_info *radio_info);
++//jiale remove for redefine
+ /**
+  * struct freq_survey - Channel survey info
+  *
+-- 
+2.25.1
+

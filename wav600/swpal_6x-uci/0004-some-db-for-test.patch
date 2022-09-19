@@ -1,0 +1,96 @@
+From 5f2683b3b87d7ec68abfc04c849dcbb8eca06300 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Fri, 29 Jul 2022 09:48:16 +0000
+Subject: [PATCH 4/5] some db for test
+
+---
+ files/db/etc/wave/db/defaultNumOfVaps         |  1 +
+ files/db/etc/wave/db/wireless_def_radio_24g   | 13 +++++++++++++
+ files/db/etc/wave/db/wireless_def_radio_5g    | 14 ++++++++++++++
+ files/db/etc/wave/db/wireless_def_station_vap |  2 ++
+ files/db/etc/wave/db/wireless_def_vap_db      | 15 +++++++++++++++
+ 5 files changed, 45 insertions(+)
+ create mode 100644 files/db/etc/wave/db/defaultNumOfVaps
+ create mode 100644 files/db/etc/wave/db/wireless_def_radio_24g
+ create mode 100644 files/db/etc/wave/db/wireless_def_radio_5g
+ create mode 100644 files/db/etc/wave/db/wireless_def_station_vap
+ create mode 100644 files/db/etc/wave/db/wireless_def_vap_db
+
+diff --git a/files/db/etc/wave/db/defaultNumOfVaps b/files/db/etc/wave/db/defaultNumOfVaps
+new file mode 100644
+index 0000000..4227b99
+--- /dev/null
++++ b/files/db/etc/wave/db/defaultNumOfVaps
+@@ -0,0 +1 @@
++DEFAULT_NO_OF_VAPS=1
+diff --git a/files/db/etc/wave/db/wireless_def_radio_24g b/files/db/etc/wave/db/wireless_def_radio_24g
+new file mode 100644
+index 0000000..c11ab53
+--- /dev/null
++++ b/files/db/etc/wave/db/wireless_def_radio_24g
+@@ -0,0 +1,13 @@
++		option type 'mac80211'
++		option band '2.4GHz'
++		option channel 'auto'
++		option hwmode '11bgnax'
++		option htmode 'HT40'
++		option disabled '0'
++		option country 'US'
++		option num_antennas '4'
++		option beacon_int '100'
++		option short_gi_20 '1'
++		option short_gi_40 '1'
++		option txpower '100'
++		option sDisableMasterVap '1'
+diff --git a/files/db/etc/wave/db/wireless_def_radio_5g b/files/db/etc/wave/db/wireless_def_radio_5g
+new file mode 100644
+index 0000000..2a44ff5
+--- /dev/null
++++ b/files/db/etc/wave/db/wireless_def_radio_5g
+@@ -0,0 +1,14 @@
++		option type 'mac80211'
++		option band '5GHz'
++		option channel 'auto'
++		option hwmode '11anacax'
++		option htmode 'VHT160'
++		option disabled '0'
++		option country 'US'
++		option num_antennas '4'
++		option beacon_int '100'
++		option doth '1'
++		option short_gi_20 '1'
++		option short_gi_40 '1'
++		option txpower '100'
++		option sDisableMasterVap '1'
+diff --git a/files/db/etc/wave/db/wireless_def_station_vap b/files/db/etc/wave/db/wireless_def_station_vap
+new file mode 100644
+index 0000000..5790a02
+--- /dev/null
++++ b/files/db/etc/wave/db/wireless_def_station_vap
+@@ -0,0 +1,2 @@
++		option mode 'sta'
++		option disabled '1'
+diff --git a/files/db/etc/wave/db/wireless_def_vap_db b/files/db/etc/wave/db/wireless_def_vap_db
+new file mode 100644
+index 0000000..f71e4d4
+--- /dev/null
++++ b/files/db/etc/wave/db/wireless_def_vap_db
+@@ -0,0 +1,15 @@
++		option network 'lan'
++		option mode 'ap'
++		option ssid 'wave'
++		option disabled '0'
++		option encryption 'none'
++		option wav_security_mode 'None'
++		option isolate '0'
++		option uapsd '1'
++		option hidden '0'
++		option wmm '1'
++		option macfilter 'disable'
++		option wps_pushbutton '0'
++		option ieee80211w '0'
++		option max_inactivity '60'
++		option wav_beacon_type 'None'
+-- 
+2.25.1
+
