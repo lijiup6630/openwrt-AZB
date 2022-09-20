@@ -2,7 +2,7 @@
 		option band '5GHz'
 		option channel 'auto'
 		option hwmode '11anacax'
-		option htmode 'VHT80'
+		option htmode 'VHT160'
 		option disabled '0'
 		option country 'US'
 		option num_antennas '4'

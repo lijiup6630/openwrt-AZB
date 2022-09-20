@@ -2,7 +2,7 @@
 		option band '2.4GHz'
 		option channel 'auto'
 		option hwmode '11bgnax'
-		option htmode 'HT20'
+		option htmode 'HT40'
 		option disabled '0'
 		option country 'US'
 		option num_antennas '4'
