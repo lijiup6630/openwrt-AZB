@@ -10,15 +10,15 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=iwlwav-driver-uci
-PKG_REV:=3859e66155228c677b103a7111f0509fc30be4fb
+PKG_REV:=HEAD
 PKG_VERSION:=6.1.0
 PKG_RELEASE:=$(PKG_REV)
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.bz2
-PKG_SOURCE_URL:=ssh://git@ilbitbucket.phoenix.local:29418/sw_wave/iwlwav-dev.git
+PKG_SOURCE_URL:=$(TOPDIR)/wav600/iwlwav-dev-uci
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=git
-PKG_MIRROR_HASH:=fffedbfede64f78f4de50d69b30186a0
+#PKG_MIRROR_HASH:=fffedbfede64f78f4de50d69b30186a0
 
 PKG_LICENSE:=GPLv2
 PKG_LICENSE_FILES:=COPYING
@@ -36,7 +36,7 @@ ifeq ($(CONFIG_TARGET_intel_x86_lgm),y)
 endif
 
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/package-version-override.mk
+#include $(INCLUDE_DIR)/package-version-override.mk
 
 define KernelPackage/$(PKG_NAME)
   SUBMENU:=Intel
@@ -137,11 +137,11 @@ ifeq ($(CONFIG_USE_WAVE600_2_EMULATOR),y)
 IFX_CFLAGS += -DCONFIG_WAVE_NO_TX_BSS_MONITOR
 endif
 
-define KernelPackage/iwlwav-driver-uci-debug
-$(call KernelPackage/iwlwav-driver-uci)
-TITLE += with debug information
-VARIANT:=debug
-endef
+#define KernelPackage/iwlwav-driver-uci-debug
+#$(call KernelPackage/iwlwav-driver-uci)
+#TITLE += with debug information
+#VARIANT:=debug
+#endef
 
 define KernelPackage/iwlwav-driver-uci-debug/description
 $(call KernelPackage/iwlwav-driver-uci/description) With debug information
@@ -158,10 +158,11 @@ endif
 
 define Build/Compile
 	@echo "Config files use: $(CONFIG_FILE)"
+	@echo "============jiale: $(KERNEL_MAKE) \n"
 	$(SED) '1s/.*/BACKPORTS_VERSION="v$(LINUX_VERSION)"/' $(PKG_BUILD_DIR)/versions
-	$(CP) $(CONFIG_FOLDER)/$(CONFIG_FILE)$(CONFIG_SUFFIX) $(PKG_BUILD_DIR)/defconfigs/iwlwav
-	$(KERNEL_MAKE) -C $(PKG_BUILD_DIR) CFLAGS="$(IFX_CFLAGS)" defconfig-iwlwav KLIB_BUILD=$(LINUX_DIR) KLIB=$(TARGET_DIR)/$(TARGET_MODULES_DIR)
-	$(KERNEL_MAKE) $(JOBS) -C $(PKG_BUILD_DIR) CFLAGS="$(IFX_CFLAGS)" CROSS_COMPILE=$(CROSS_COMPILE) ARCH=$(ARCH) KLIB_BUILD=$(LINUX_DIR) KLIB=$(TARGET_DIR)/$(TARGET_MODULES_DIR) UGW_DRIVER_VERSION="$(PKG_VERSION).$(PKG_REV)"
+	#$(CP) $(CONFIG_FOLDER)/$(CONFIG_FILE)$(CONFIG_SUFFIX) $(PKG_BUILD_DIR)/defconfigs/iwlwav
+	$(MAKE) -C $(PKG_BUILD_DIR) CFLAGS="$(IFX_CFLAGS)" defconfig-x86_64 KLIB_BUILD=$(LINUX_DIR) KLIB=$(TARGET_DIR)/$(TARGET_MODULES_DIR)
+	$(MAKE) $(JOBS) -C $(PKG_BUILD_DIR) CFLAGS="$(IFX_CFLAGS)" CROSS_COMPILE=$(CROSS_COMPILE) ARCH=$(ARCH) KLIB_BUILD=$(LINUX_DIR) KLIB=$(TARGET_DIR)/$(TARGET_MODULES_DIR) UGW_DRIVER_VERSION="$(PKG_VERSION).$(PKG_REV)"
 endef
 
 define KernelPackage/iwlwav-driver-uci/install
@@ -170,12 +171,11 @@ define KernelPackage/iwlwav-driver-uci/install
 	$(INSTALL_DIR) $(1)/lib/preinit
 	echo -e "iwlwav_driver_hash=\"$(PKG_REV)\"\niwlwav_driver_tag=\"$(PKG_REV)\"" > $(1)/etc/iwlwav_driver.ver
 	$(INSTALL_DATA) ./files/91_wireless_calib $(1)/lib/preinit
-	cd $(1)/lib/firmware && ln -sf ../../tmp/wlanconfig/cal_wlan0.bin
-	cd $(1)/lib/firmware && ln -sf ../../tmp/wlanconfig/cal_wlan2.bin
-	cd $(1)/lib/firmware && ln -sf ../../tmp/wlanconfig/cal_wlan4.bin
+	#cd $(1)/lib/firmware && ln -sf ../../tmp/wlanconfig/cal_wlan0.bin
+	#cd $(1)/lib/firmware && ln -sf ../../tmp/wlanconfig/cal_wlan2.bin
+	#cd $(1)/lib/firmware && ln -sf ../../tmp/wlanconfig/cal_wlan4.bin
 endef
 
 KernelPackage/iwlwav-driver-uci-debug/install = $(KernelPackage/iwlwav-driver-uci/install)
 
 $(eval $(call KernelPackage,iwlwav-driver-uci))
-$(eval $(call KernelPackage,iwlwav-driver-uci-debug))

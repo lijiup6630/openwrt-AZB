@@ -10,14 +10,14 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=iwlwav-tools
-PKG_REV:=05c44681e83aed959760a2ccc841e9e02feb38a9
+PKG_REV:=HEAD
 PKG_VERSION:=6.1.0
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=ssh://git@ilbitbucket.phoenix.local:29418/sw_wave/iwlwav-tools.git
+PKG_SOURCE_URL:=$(TOPDIR)/wav600/iwlwav-tools
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=git
-PKG_MIRROR_HASH:=9abe179fe1d191dbae01c76f5b36aaeb
+#PKG_MIRROR_HASH:=9abe179fe1d191dbae01c76f5b36aaeb
 
 PKG_LICENSE:=MaxLinear
 PKG_LICENSE_FILES:=LICENSE
@@ -32,7 +32,7 @@ PKG_BUILD_DEPENDS:=libnl safec3 dwpal_6x-uci$(PKG_VARIANT_SUFFIX)
 PKG_BUILD_DIR:=$(BUILD_DIR)/iwlwav-tools-$(BUILD_VARIANT)/iwlwav-tools-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/package-version-override.mk
+#include $(INCLUDE_DIR)/package-version-override.mk
 
 define Package/iwlwav-tools
   SECTION:=net
@@ -71,7 +71,7 @@ LIBNL_DIR:=$(wildcard $(STAGING_DIR)/usr/include/libnl3)
 
 USR_INC_DIR:=$(wildcard $(STAGING_DIR)/usr/include)
 TARGET_CFLAGS += -I$(USR_INC_DIR) -I$(LIBNL_DIR) -DHAVE_C99=1
-LDFLAGS += -L$(TOOLCHAIN_DIR)/lib -L$(STAGING_DIR)/usr/lib -lnl-genl-3 -lnl-3 -pthread -lpthread -lsafec-3.3
+LDFLAGS += -L$(TOOLCHAIN_DIR)/lib -L$(STAGING_DIR)/usr/lib -lnl-genl-3 -lnl-3 -pthread -lpthread -lsafec-3.4
 CFLAGS += -fstack-protector-strong -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security -Wall -fPIC -Wl,-strip-debug
 LDFLAGS += -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro
 

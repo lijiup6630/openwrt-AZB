@@ -10,13 +10,13 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=iwlwav-iw
-PKG_REV:=3fb98816deb2b186ea4aad94ad845aacdbd6ba6a
+PKG_REV:=HEAD
 PKG_VERSION:=4.14
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=ssh://git@ilbitbucket.phoenix.local:29418/sw_wave/iwlwav-iw.git
+PKG_SOURCE_URL:=$(TOPDIR)/wav600/iwlwav-iw
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=git
-PKG_MIRROR_HASH:=3a164ffb7381f7da0bf8019e63daf16e
+#PKG_MIRROR_HASH:=3a164ffb7381f7da0bf8019e63daf16e
 PKG_BUILD_DIR:=$(BUILD_DIR)/iwlwav-iw-$(BUILD_VARIANT)/iwlwav-iw-$(PKG_VERSION)
 PKG_BUILD_DEPENDS:=libnl safec3 PACKAGE_iw:iw
 
@@ -52,7 +52,7 @@ LIBNL_DIR:=$(wildcard $(BUILD_DIR)/libnl-3*)
 USR_INC_DIR:=$(wildcard $(STAGING_DIR)/usr/include)
 
 IFX_CFLAGS += -I$(USR_INC_DIR) -I$(LIBNL_DIR)/include -DHAVE_C99=1
-IFX_LDFLAGS += -L$(STAGING_DIR)/usr/lib -L$(LIBNL_DIR)/lib/.libs -lnl-3 -lsafec-3.3
+IFX_LDFLAGS += -L$(STAGING_DIR)/usr/lib -L$(LIBNL_DIR)/lib/.libs -lnl-3 -lsafec-3.4
 IFX_CFLAGS += -fstack-protector-strong -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security -Wall -fPIC -Wl,-strip-debug
 IFX_LDFLAGS += -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro
 ifeq ($(BUILD_VARIANT),debug)

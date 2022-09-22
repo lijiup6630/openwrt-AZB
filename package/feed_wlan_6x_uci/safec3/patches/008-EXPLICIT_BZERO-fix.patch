@@ -1,0 +1,25 @@
+From 880bff18278932547f2acb94b64d0c0da448e0be Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Wed, 6 Jul 2022 03:20:55 +0000
+Subject: [PATCH] EXPLICIT_BZERO fix
+
+---
+ src/extmem/memzero_s.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/extmem/memzero_s.c b/src/extmem/memzero_s.c
+index 3833644..5a99485 100644
+--- a/src/extmem/memzero_s.c
++++ b/src/extmem/memzero_s.c
+@@ -89,7 +89,7 @@ _memzero_s_chk (void *dest, rsize_t len, const size_t destbos)
+      * mem_prim_set(dest, len, 0xA5);
+      * mem_prim_set(dest, len, 0x5A);
+      */
+-#ifdef HAVE_EXPLICIT_BZERO
++#if 0//#ifdef HAVE_EXPLICIT_BZERO
+     explicit_bzero(dest, len);
+ #else
+     mem_prim_set(dest, len, 0);
+-- 
+2.25.1
+

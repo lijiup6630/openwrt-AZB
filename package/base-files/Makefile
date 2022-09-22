@@ -140,6 +140,9 @@ endif
 
 define Package/base-files/install
 	$(CP) ./files/* $(1)/
+	$(RM) $(1)/sbin/wifi
+	$(RM) $(1)/lib/functions.sh
+	$(RM) $(1)/lib/functions/network.sh
 	$(Package/base-files/install-key)
 	$(Package/base-files/nand-support)
 	$(Package/base-files/legacy-sdcard-support)

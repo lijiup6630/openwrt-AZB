@@ -8,12 +8,12 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=ltq-wlan-wave_6x-uci
 PKG_VERSION:=06.01.00
-PKG_REV:=cfde7ccdc1036010d1a4b07145bb3b2df47f4495
+PKG_REV:=ff7a00c1df70c744bc49889b7cfa9821836ff9bd
 PKG_BUILD_DIR:=$(BUILD_DIR)/ltq-wlan-wave_6x-uci-$(BUILD_VARIANT)/ltq-wlan-wave_6x-uci-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=$(PKG_REV)
-PKG_SOURCE_URL:=ssh://git@ilbitbucket.phoenix.local:29418/sw_wave/wave_bin.git
+PKG_SOURCE_VERSION:=HEAD
+PKG_SOURCE_URL:=$(TOPDIR)/wav600/wave_bin
 PKG_SOURCE_PROTO:=git
-PKG_MIRROR_HASH:=d9e354f8e071b7bcf830327e458c6b99
+#PKG_MIRROR_HASH:=d9e354f8e071b7bcf830327e458c6b99
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
 PKG_LICENSE:=MaxLinear
@@ -28,7 +28,6 @@ REGULATORY_BIN_FOLDER:=$(PKG_BUILD_DIR)/regulatory/bin
 BIN_FOLDER:=opt/intel/bin
 SBIN_FOLDER:=opt/intel/sbin
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/package-version-override.mk
 
 
 define Package/ltq-wlan-wave_6x-uci/default
@@ -52,8 +51,7 @@ define Package/ltq-wlan-wave_6x-uci/default
 		@+BUSYBOX_CONFIG_LSMOD \
 		@+PACKAGE_libuuid \
 		@+PACKAGE_uuidgen \
-		@+PACKAGE_udev \
-		+prplmesh-dwpal
+		@+PACKAGE_udev 
 	URL:=http://www.intel.com
 	MAINTAINER:=Intel Corporation
 	MENU:=1

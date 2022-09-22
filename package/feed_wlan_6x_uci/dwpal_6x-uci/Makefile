@@ -1,10 +1,10 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=dwpal_6x-uci
-PKG_REV:=2154caf4c9b23e0f037ea70e14bb563fa273df30
+PKG_REV:=HEAD
 PKG_VERSION:=1.0.0.1
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=ssh://git@ilbitbucket.phoenix.local:29418/sw_wave/dwpal.git
+PKG_SOURCE_URL:=$(TOPDIR)/wav600/dwpal_6x-uci
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=git
 PKG_MIRROR_HASH:=0468312807d9c8d3d74b0952e6e82187
@@ -16,7 +16,7 @@ PKG_LICENSE:=BSD 3-clause
 PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/package-version-override.mk
+#include $(INCLUDE_DIR)/package-version-override.mk
 define Package/dwpal_6x-uci
   SECTION:=net
   CATEGORY:=Intel
@@ -60,7 +60,7 @@ IWLWAV_HOSTAP_DIR:=$(wildcard $(BUILD_DIR)/iwlwav-hostap-uci-$(BUILD_VARIANT)/iw
 IWLWAV_IW_DIR:=$(wildcard $(BUILD_DIR)/iwlwav-iw-$(BUILD_VARIANT)/iwlwav-iw-*)
 
 IFX_CFLAGS += -I$(IWLWAV_IW_DIR) -I$(IWLWAV_HOSTAP_DIR)/src/common/ -I$(IWLWAV_HOSTAP_DIR)/src/utils/ -I$(LIBNL_DIR)/include -DHAVE_C99=1
-IFX_LDFLAGS += -L$(STAGING_DIR)/usr/lib -L$(LIBNL_DIR)/lib/.libs -lnl-3 -lsafec-3.3
+IFX_LDFLAGS += -L$(STAGING_DIR)/usr/lib -L$(LIBNL_DIR)/lib/.libs -lnl-3 -lsafec-3.4
 IFX_CFLAGS += -fstack-protector-strong -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security -Wall -fPIC -Wl,-strip-debug
 IFX_LDFLAGS += -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro
 ifeq ($(BUILD_VARIANT),debug)

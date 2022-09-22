@@ -1,0 +1,25 @@
+From 1a3c21471876f4f3e5c4d53a55213e8fe1b26f7d Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Wed, 22 Jun 2022 08:05:35 +0000
+Subject: [PATCH] crypto build error
+
+---
+ scripts/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 9adb6d247..7013da949 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -21,7 +21,7 @@ HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
+ HOSTCFLAGS_sign-file.o = $(CRYPTO_CFLAGS)
+ HOSTLDLIBS_sign-file = $(CRYPTO_LIBS)
+ HOSTCFLAGS_extract-cert.o = $(CRYPTO_CFLAGS)
+-HOSTLDLIBS_extract-cert = $(CRYPTO_LIBS)
++HOSTLDLIBS_extract-cert = $(CRYPTO_LIBS) -lpthread
+ 
+ ifdef CONFIG_UNWINDER_ORC
+ ifeq ($(ARCH),x86_64)
+-- 
+2.25.1
+

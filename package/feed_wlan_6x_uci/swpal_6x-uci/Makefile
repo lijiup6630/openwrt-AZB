@@ -9,30 +9,27 @@ include $(INCLUDE_DIR)/kernel.mk
 
 #### Package Info ############################### 
 PKG_NAME:=swpal_6x-uci
-PKG_REV:=b821e8b768f8b317b95293009b3196920d88fb46
+PKG_REV:=HEAD
 PKG_VERSION:=1.0.0.1
 PKG_RELEASE:=$(PKG_REV)
 PKG_BASE_NAME:=$(PKG_NAME)
 PKG_SOURCE:=$(PKG_BASE_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=ssh://git@ilbitbucket.phoenix.local:29418/sw_wave/swpal.git
+PKG_SOURCE_URL:=$(TOPDIR)/wav600/swpal_6x-uci
 PKG_SOURCE_SUBDIR:=$(PKG_BASE_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=git
-PKG_MIRROR_HASH:=e847f541a9a6aac59276623bdc7011a0
+#PKG_MIRROR_HASH:=e847f541a9a6aac59276623bdc7011a0
 #PKG_MD5SUM:=40b89c61036add0c2dd1fc10767d3b5f
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_BASE_NAME)-$(PKG_VERSION)
 PKG_DEFAULT_CUSTOM_SOURCE_DIR:=$(shell pwd)
 
-PKG_BUILD_DEPENDS:=libugwhelper uci safec3
-
-PKG_LICENSE:=GPLv2, LGPL-2.1
-PKG_LICENSE_FILES:=LICENSE
+PKG_BUILD_DEPENDS:= uci safec3
 
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/package-version-override.mk
+#include $(INCLUDE_DIR)/package-version-override.mk
 ## don't remove '-' in the next line - this is part of the Makefile syntax ##
--include $(STAGING_DIR)/mk/ugw-loglevel.mk
+#-include $(STAGING_DIR)/mk/ugw-loglevel.mk
 
 define Package/$(PKG_NAME)
   SECTION:=utils
@@ -41,7 +38,7 @@ define Package/$(PKG_NAME)
   TITLE:=Intel SWPAL
   URL:=http://www.intel.com
   MAINTAINER:=Intel Corporation
-  DEPENDS:= +libugwhelper +libcal +csd +servd +uci +libsafec3
+  DEPENDS:= +lib +libcal +csd +servd +uci +libsafec3
   MENU:=1
   VARIANT:=release
   PROVIDES:=libspal
@@ -81,7 +78,7 @@ ifeq ($(CONFIG_USE_MUSL),y)
 endif
   
 TARGET_CFLAGS += -DCONFIG_RPCD -DHAVE_C99=1
-IFX_LDFLAGS += -lsafec-3.3
+IFX_LDFLAGS += -lsafec-3.4
 IFX_CFLAGS += -fstack-protector-strong -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security -Wall -fPIC -Wl,-strip-debug
 IFX_LDFLAGS += -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro
 

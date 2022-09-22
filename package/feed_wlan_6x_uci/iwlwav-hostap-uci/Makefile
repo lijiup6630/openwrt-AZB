@@ -10,13 +10,13 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=iwlwav-hostap-uci
-PKG_REV:=32cea1bb423d5b66ff77caa561022249bbbdae3f
+PKG_REV:=HEAD
 PKG_VERSION:=2.8
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=ssh://git@ilbitbucket.phoenix.local:29418/sw_wave/iwlwav-hostap.git
+PKG_SOURCE_URL:=$(TOPDIR)/wav600/iwlwav-hostap-uci
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=git
-PKG_MIRROR_HASH:=8471b862276fb8635e2b0659e1ea3bbc
+#PKG_MIRROR_HASH:=8471b862276fb8635e2b0659e1ea3bbc
 ifeq ($(BUILD_VARIANT),debug)
 PKG_CONFIG_DEPENDS:=CONFIG_WIRELESS_STA-debug
 else
@@ -29,7 +29,7 @@ PKG_LICENSE:=BSD
 PKG_LICENSE_FILES:=COPYING
 
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/package-version-override.mk
+#include $(INCLUDE_DIR)/package-version-override.mk
 
 define Package/iwlwav-hostap-uci
   SECTION:=net
@@ -80,7 +80,7 @@ LIBRT_DIR:=$(TOOLCHAIN_DIR)
 USR_INC_DIR:=$(wildcard $(STAGING_DIR)/usr/include)
 
 IFX_CFLAGS += -I$(USR_INC_DIR) -I$(OPENSSL_DIR)/include -I$(LIBNL_DIR)/include -DHAVE_C99=1
-IFX_LDFLAGS += -L$(STAGING_DIR)/usr/lib -L$(OPENSSL_DIR)/ -L$(LIBNL_DIR)/lib/.libs -lnl-3 -L$(LIBRT_DIR)/lib -lrt -lsafec-3.3
+IFX_LDFLAGS += -L$(STAGING_DIR)/usr/lib -L$(OPENSSL_DIR)/ -L$(LIBNL_DIR)/lib/.libs -lnl-3 -L$(LIBRT_DIR)/lib -lrt -lsafec-3.4
 IFX_CFLAGS += -fstack-protector-strong -O2 -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security -Wall -Wtype-limits -fPIE -Wl,-strip-debug
 IFX_LDFLAGS += -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -pie
 ifeq ($(BUILD_VARIANT),debug)
