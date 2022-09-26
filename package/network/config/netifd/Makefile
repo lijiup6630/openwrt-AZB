@@ -45,6 +45,7 @@ define Package/netifd/install
 	$(CP) ./files/* $(1)/
 	$(INSTALL_DIR) $(1)/etc/udhcpc.user.d/
 	$(CP) $(PKG_BUILD_DIR)/scripts/* $(1)/lib/netifd/
+	$(RM) $(1)/lib/netifd/netifd-wireless.sh
 endef
 
 $(eval $(call BuildPackage,netifd))

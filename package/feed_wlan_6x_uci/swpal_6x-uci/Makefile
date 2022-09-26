@@ -38,7 +38,7 @@ define Package/$(PKG_NAME)
   TITLE:=Intel SWPAL
   URL:=http://www.intel.com
   MAINTAINER:=Intel Corporation
-  DEPENDS:= +lib +libcal +csd +servd +uci +libsafec3
+  DEPENDS:= +uci +libsafec3
   MENU:=1
   VARIANT:=release
   PROVIDES:=libspal
@@ -94,6 +94,9 @@ endif
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/$(VENDOR_PATH)/usr/lib
 	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/ieee80211
+	$(INSTALL_DIR) $(1)/lib/config
+	$(INSTALL_DIR) $(1)/lib/functions
 	$(INSTALL_DIR) $(1)/lib/wifi
 	$(INSTALL_DIR) $(1)/lib/netifd
 	$(INSTALL_DIR) $(1)/lib/netifd/wireless
@@ -115,15 +118,18 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/sbin
 	$(INSTALL_DIR) $(1)/opt/intel/wave/scripts/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libspal.so $(1)/$(VENDOR_PATH)/usr/lib
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/etc/hotplug.d/ieee80211/mac80211.hotplug $(1)/etc/hotplug.d/ieee80211/10-wifi-detect
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libspal_utils.so $(1)/$(VENDOR_PATH)/usr/lib
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/netifd-wireless.sh $(1)/lib/netifd/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/functions.sh $(1)/lib/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/config/uci.sh $(1)/lib/config
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/functions/network.sh $(1)/lib/functions
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/hostapd.sh $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/wireless/* $(1)/lib/netifd/wireless/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/sigma-ap.sh $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/sigma-start.sh $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/sigmaManagerDaemon.sh $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/sigma_mbo_daemon.sh $(1)/lib/netifd/
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/utils.sh $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/6ghz_rnr.sh $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/update_rnr.sh $(1)/lib/netifd/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/files/scripts/lib/netifd/update_rnr_uci.sh $(1)/lib/netifd/
