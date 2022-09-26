@@ -1,0 +1,54 @@
+From b610ba7b27584e0f03d22c4fc770d67fce80937f Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Thu, 22 Sep 2022 05:58:43 +0000
+Subject: [PATCH 2/2] rnr_neighbor error fix
+
+---
+ src/common/ieee802_11_common.c |  7 +++++++
+ src/common/ieee802_11_defs.h   | 12 ++++++------
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/src/common/ieee802_11_common.c b/src/common/ieee802_11_common.c
+index 0c28ad2..e4b3cd2 100644
+--- a/src/common/ieee802_11_common.c
++++ b/src/common/ieee802_11_common.c
+@@ -16,6 +16,13 @@
+ #include "ieee802_11_defs.h"
+ #include "ieee802_11_common.h"
+ 
++struct rnr_neighbor_ap_info {
++       u8 tbtt_info_hdr;
++       u8 tbtt_info_len;
++       u8 op_class;
++       u8 channel;
++} __rnr_neighbor_packed;
++
+ static int ieee802_11_parse_vendor_specific(const u8 *pos, size_t elen,
+ 					    struct ieee802_11_elems *elems,
+ 					    int show_errors)
+diff --git a/src/common/ieee802_11_defs.h b/src/common/ieee802_11_defs.h
+index 1ea8946..19ae85d 100644
+--- a/src/common/ieee802_11_defs.h
++++ b/src/common/ieee802_11_defs.h
+@@ -1309,12 +1309,12 @@ struct ieee80211_he_operation {
+ 
+ #define RNR_SHORT_SSID_LEN 4
+ 
+-struct rnr_neighbor_ap_info {
+-       u8 tbtt_info_hdr;
+-       u8 tbtt_info_len;
+-       u8 op_class;
+-       u8 channel;
+-} __packed;
++//struct rnr_neighbor_ap_info {
++//       u8 tbtt_info_hdr;
++//       u8 tbtt_info_len;
++//       u8 op_class;
++//       u8 channel;
++//} __packed;
+ 
+ 
+ struct ieee80211_he_mu_edca_parameter_set {
+-- 
+2.25.1
+

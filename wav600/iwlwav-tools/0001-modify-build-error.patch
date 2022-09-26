@@ -1,0 +1,39 @@
+From deb42520d909ad395cb5a9b52f2a7993b3781695 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Thu, 28 Jul 2022 07:03:16 +0000
+Subject: [PATCH] modify build error
+
+---
+ Makefile                    | 2 +-
+ tools/shared/linux/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 3528d1d..d180635 100644
+--- a/Makefile
++++ b/Makefile
+@@ -17,7 +17,7 @@ export abs_top_builddir = $(abs_top_srcdir)
+ export abs_logprep_srcdir = $(abs_top_srcdir)/wireless/shared_iwlwav-dev
+ export STAGING_DIR = 
+ 
+-CFLAGS += -Werror=format-security -Wall -Wl,-strip-debug
++CFLAGS += -Werror=format-security -Wall -Wl -Wno-address-of-packed-member,-strip-debug
+ CFLAGS += `pkg-config --cflags libnl-3.0` -Wno-unused-result
+ LDFLAGS += `pkg-config libnl-3.0 libnl-genl-3.0 --libs` -lpthread
+ 
+diff --git a/tools/shared/linux/Makefile b/tools/shared/linux/Makefile
+index 017aba0..71253f1 100644
+--- a/tools/shared/linux/Makefile
++++ b/tools/shared/linux/Makefile
+@@ -14,7 +14,7 @@
+ builddir = .
+ 
+ override CC := $(abs_top)/support/mtlkfront.sh $(CC)
+-override CFLAGS += -Wall -Wno-multichar -fno-strict-aliasing -Werror -Wno-error=undef -O2
++override CFLAGS += -Wall -Wno-multichar -Wno-address-of-packed-member -fno-strict-aliasing -Werror -Wno-error=undef -O2
+ override CFLAGS += -I$(builddir)/.
+ override CFLAGS += -I$(abs_top)
+ override CFLAGS += -I$(abs_top)/tools/shared/
+-- 
+2.25.1
+

@@ -1,0 +1,26 @@
+From e76a0d6b58909bceaea9064d08dd39cf9a4a5756 Mon Sep 17 00:00:00 2001
+From: yangche1 <stellate.yang@intel.com>
+Date: Tue, 5 Nov 2019 10:55:31 +0800
+Subject: [PATCH 1/2] Fix for WAV ER6 swpal build on OpenWrt
+
+Signed-off-by: yangche1 <stellate.yang@intel.com>
+---
+ make.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/make.inc b/make.inc
+index 4d8709e..5b06d7c 100755
+--- a/make.inc
++++ b/make.inc
+@@ -22,7 +22,7 @@ endif
+ STRIP ?= strip
+ AR ?= ar
+ RANLIB ?= ranlib
+-opt_flags ?= -Wall -Werror -Wextra -Wshadow -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Winit-self -Wno-missing-braces
++opt_flags ?= -Wall -Wextra -Wshadow -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Winit-self -Wno-missing-braces -DPACKAGE_ID=\"WAVE_HAL\" -DLOGGING_ID -DLOG_LEVEL=6 -DLOG_TYPE=1
+ 
+ all: $(libs) $(bins)
+ 
+-- 
+2.25.1
+

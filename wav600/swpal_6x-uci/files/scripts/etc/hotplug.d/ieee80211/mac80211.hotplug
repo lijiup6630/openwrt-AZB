@@ -1,0 +1,40 @@
+#!/bin/sh
+
+UCI_WAV_DB=/etc/config/wireless
+WIFI_FACTORY_CMD=/opt/intel/wave/scripts/wave_factory_reset.sh
+
+[ "${ACTION}" = "add" ] && {
+	radios=`ls /proc/net/mtlk/| grep "wlan[0|2|4]"`
+	for i in $(seq 1 60); do
+		wlan2_ready=`echo $radios | grep wlan2`
+
+		if [ -z "$wlan2_ready" ]; then
+			sleep 5
+			radios=`ls /proc/net/mtlk/| grep "wlan[0|2|4]"`
+			continue
+		fi
+
+		break
+	done
+
+	if [ -z "$radios" ]; then
+		exit 1
+	fi
+
+	if [ -s "$UCI_WAV_DB" ]; then
+		db_radios=`cat ${UCI_WAV_DB} | grep "wlan[0|2|4]" | awk '{ print $3 }'`
+		db_radios=`echo $db_radios | sed $'s/\'//g'`
+		for radio in $radios; do
+			result=`echo $db_radios | grep "${radio}"`
+			if [ -z "$result" ]; then
+				echo "radio setting changed! UCI DB to be reset....." > /dev/console
+				${WIFI_FACTORY_CMD}
+				exit 0
+			fi
+		done
+
+		exit 0
+        fi
+
+	${WIFI_FACTORY_CMD}
+}
