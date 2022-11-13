@@ -1,0 +1,109 @@
+From d6bf6e60013c5f57b5b324aa510447f09c50b9c1 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Thu, 27 Oct 2022 09:12:55 +0000
+Subject: [PATCH] remove kconfig for 80211
+
+---
+ drivers/net/wireless/Kconfig          | 11 -----------
+ drivers/net/wireless/Makefile         |  1 -
+ drivers/net/wireless/mediatek/Kconfig |  6 +-----
+ drivers/staging/Kconfig               | 12 ------------
+ 4 files changed, 1 insertion(+), 29 deletions(-)
+
+diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
+index 170a64e67..5fa9b9d85 100644
+--- a/drivers/net/wireless/Kconfig
++++ b/drivers/net/wireless/Kconfig
+@@ -39,14 +39,10 @@ source "drivers/net/wireless/cisco/Kconfig"
+ source "drivers/net/wireless/intel/Kconfig"
+ source "drivers/net/wireless/intersil/Kconfig"
+ source "drivers/net/wireless/marvell/Kconfig"
+-source "drivers/net/wireless/mediatek/Kconfig"
+ source "drivers/net/wireless/microchip/Kconfig"
+ source "drivers/net/wireless/ralink/Kconfig"
+-source "drivers/net/wireless/realtek/Kconfig"
+ source "drivers/net/wireless/rsi/Kconfig"
+ source "drivers/net/wireless/st/Kconfig"
+-source "drivers/net/wireless/ti/Kconfig"
+-source "drivers/net/wireless/zydas/Kconfig"
+ source "drivers/net/wireless/quantenna/Kconfig"
+ 
+ config PCMCIA_RAYCS
+@@ -117,11 +113,4 @@ config USB_NET_RNDIS_WLAN
+ 
+ 	  If you choose to build a module, it'll be called rndis_wlan.
+ 
+-config VIRT_WIFI
+-	tristate "Wifi wrapper for ethernet drivers"
+-	depends on CFG80211
+-	help
+-	  This option adds support for ethernet connections to appear as if they
+-	  are wifi connections through a special rtnetlink device.
+-
+ endif # WLAN
+diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
+index 80b324499..530b88e7f 100644
+--- a/drivers/net/wireless/Makefile
++++ b/drivers/net/wireless/Makefile
+@@ -11,7 +11,6 @@ obj-$(CONFIG_WLAN_VENDOR_CISCO) += cisco/
+ obj-$(CONFIG_WLAN_VENDOR_INTEL) += intel/
+ obj-$(CONFIG_WLAN_VENDOR_INTERSIL) += intersil/
+ obj-$(CONFIG_WLAN_VENDOR_MARVELL) += marvell/
+-obj-$(CONFIG_WLAN_VENDOR_MEDIATEK) += mediatek/
+ obj-$(CONFIG_WLAN_VENDOR_MICROCHIP) += microchip/
+ obj-$(CONFIG_WLAN_VENDOR_RALINK) += ralink/
+ obj-$(CONFIG_WLAN_VENDOR_REALTEK) += realtek/
+diff --git a/drivers/net/wireless/mediatek/Kconfig b/drivers/net/wireless/mediatek/Kconfig
+index bd4db1282..9439ff70c 100644
+--- a/drivers/net/wireless/mediatek/Kconfig
++++ b/drivers/net/wireless/mediatek/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config WLAN_VENDOR_MEDIATEK
+ 	bool "MediaTek devices"
+-	default y
++	default n
+ 	help
+ 	  If you have a wireless card belonging to this class, say Y.
+ 
+@@ -10,7 +10,3 @@ config WLAN_VENDOR_MEDIATEK
+ 	  questions about these cards. If you say Y, you will be asked for
+ 	  your specific card in the following questions.
+ 
+-if WLAN_VENDOR_MEDIATEK
+-source "drivers/net/wireless/mediatek/mt7601u/Kconfig"
+-source "drivers/net/wireless/mediatek/mt76/Kconfig"
+-endif # WLAN_VENDOR_MEDIATEK
+diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
+index 2d0310448..85adfb2fc 100644
+--- a/drivers/staging/Kconfig
++++ b/drivers/staging/Kconfig
+@@ -30,16 +30,6 @@ source "drivers/staging/comedi/Kconfig"
+ 
+ source "drivers/staging/olpc_dcon/Kconfig"
+ 
+-source "drivers/staging/rtl8192u/Kconfig"
+-
+-source "drivers/staging/rtl8192e/Kconfig"
+-
+-source "drivers/staging/rtl8723bs/Kconfig"
+-
+-source "drivers/staging/rtl8712/Kconfig"
+-
+-source "drivers/staging/rtl8188eu/Kconfig"
+-
+ source "drivers/staging/rts5208/Kconfig"
+ 
+ source "drivers/staging/octeon/Kconfig"
+@@ -114,8 +104,6 @@ source "drivers/staging/kpc2000/Kconfig"
+ 
+ source "drivers/staging/qlge/Kconfig"
+ 
+-source "drivers/staging/wfx/Kconfig"
+-
+ source "drivers/staging/hikey9xx/Kconfig"
+ 
+ endif # STAGING
+-- 
+2.25.1
+

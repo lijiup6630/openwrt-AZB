@@ -1,0 +1,73 @@
+From b9c95f19de770ac7f2bb6df76289273795ef24e8 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Thu, 27 Oct 2022 09:39:09 +0000
+Subject: [PATCH] key cryptographic for kconfig
+
+---
+ certs/Kconfig                  | 4 ++--
+ crypto/asymmetric_keys/Kconfig | 4 ++--
+ kernel/trace/Kconfig           | 2 --
+ 3 files changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/certs/Kconfig b/certs/Kconfig
+index ab88d2a7f..d664984cf 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -43,7 +43,7 @@ config SYSTEM_TRUSTED_KEYS
+ 
+ config SYSTEM_EXTRA_CERTIFICATE
+ 	bool "Reserve area for inserting a certificate without recompiling"
+-	depends on SYSTEM_TRUSTED_KEYRING
++	default n
+ 	help
+ 	  If set, space for an extra certificate will be reserved in the kernel
+ 	  image. This allows introducing a trusted certificate to the default
+@@ -59,7 +59,7 @@ config SYSTEM_EXTRA_CERTIFICATE_SIZE
+ 
+ config SECONDARY_TRUSTED_KEYRING
+ 	bool "Provide a keyring to which extra trustable keys may be added"
+-	depends on SYSTEM_TRUSTED_KEYRING
++	default n
+ 	help
+ 	  If set, provide a keyring to which extra keys may be added, provided
+ 	  those keys are not blacklisted and are vouched for by a key built
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 1f1f004dc..73b183a0c 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -46,9 +46,9 @@ config X509_CERTIFICATE_PARSER
+ 
+ config PKCS8_PRIVATE_KEY_PARSER
+ 	tristate "PKCS#8 private key parser"
+-	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+ 	select ASN1
+ 	select OID_REGISTRY
++	default n
+ 	help
+ 	  This option provides support for parsing PKCS#8 format blobs for
+ 	  private key data and provides the ability to instantiate a crypto key
+@@ -75,7 +75,7 @@ config PKCS7_MESSAGE_PARSER
+ 
+ config PKCS7_TEST_KEY
+ 	tristate "PKCS#7 testing key type"
+-	depends on SYSTEM_DATA_VERIFICATION
++	default n
+ 	help
+ 	  This option provides a type of key that can be loaded up from a
+ 	  PKCS#7 message - provided the message is signed by a trusted key.  If
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index 29db703f6..4ce9d62d5 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -583,8 +583,6 @@ config PROBE_EVENTS
+ 
+ config BPF_KPROBE_OVERRIDE
+ 	bool "Enable BPF programs to override a kprobed function"
+-	depends on BPF_EVENTS
+-	depends on FUNCTION_ERROR_INJECTION
+ 	default n
+ 	help
+ 	 Allows BPF to override the execution of a probed function and
+-- 
+2.25.1
+

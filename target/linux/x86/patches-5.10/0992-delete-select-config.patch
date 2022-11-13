@@ -1,0 +1,103 @@
+From d22ae0adfb8b91112f96208882fcd13daac9a356 Mon Sep 17 00:00:00 2001
+From: jialelux <jialex.lu@intel.com>
+Date: Thu, 27 Oct 2022 13:27:09 +0000
+Subject: [PATCH] delete select config
+
+---
+ certs/Kconfig                  | 16 ----------------
+ crypto/asymmetric_keys/Kconfig | 20 --------------------
+ kernel/trace/Kconfig           |  6 ------
+ 3 files changed, 42 deletions(-)
+
+diff --git a/certs/Kconfig b/certs/Kconfig
+index d664984cf..50b671d00 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -41,13 +41,6 @@ config SYSTEM_TRUSTED_KEYS
+ 	  form of DER-encoded *.x509 files in the top-level build directory,
+ 	  those are no longer used. You will need to set this option instead.
+ 
+-config SYSTEM_EXTRA_CERTIFICATE
+-	bool "Reserve area for inserting a certificate without recompiling"
+-	default n
+-	help
+-	  If set, space for an extra certificate will be reserved in the kernel
+-	  image. This allows introducing a trusted certificate to the default
+-	  system keyring without recompiling the kernel.
+ 
+ config SYSTEM_EXTRA_CERTIFICATE_SIZE
+ 	int "Number of bytes to reserve for the extra certificate"
+@@ -56,15 +49,6 @@ config SYSTEM_EXTRA_CERTIFICATE_SIZE
+ 	help
+ 	  This is the number of bytes reserved in the kernel image for a
+ 	  certificate to be inserted.
+-
+-config SECONDARY_TRUSTED_KEYRING
+-	bool "Provide a keyring to which extra trustable keys may be added"
+-	default n
+-	help
+-	  If set, provide a keyring to which extra keys may be added, provided
+-	  those keys are not blacklisted and are vouched for by a key built
+-	  into the kernel or already in the secondary trusted keyring.
+-
+ config SYSTEM_BLACKLIST_KEYRING
+ 	bool "Provide system-wide ring of blacklisted keys"
+ 	depends on KEYS
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 73b183a0c..49e041150 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -44,15 +44,6 @@ config X509_CERTIFICATE_PARSER
+ 	  data and provides the ability to instantiate a crypto key from a
+ 	  public key packet found inside the certificate.
+ 
+-config PKCS8_PRIVATE_KEY_PARSER
+-	tristate "PKCS#8 private key parser"
+-	select ASN1
+-	select OID_REGISTRY
+-	default n
+-	help
+-	  This option provides support for parsing PKCS#8 format blobs for
+-	  private key data and provides the ability to instantiate a crypto key
+-	  from that data.
+ 
+ config TPM_KEY_PARSER
+ 	tristate "TPM private key parser"
+@@ -73,17 +64,6 @@ config PKCS7_MESSAGE_PARSER
+ 	  This option provides support for parsing PKCS#7 format messages for
+ 	  signature data and provides the ability to verify the signature.
+ 
+-config PKCS7_TEST_KEY
+-	tristate "PKCS#7 testing key type"
+-	default n
+-	help
+-	  This option provides a type of key that can be loaded up from a
+-	  PKCS#7 message - provided the message is signed by a trusted key.  If
+-	  it is, the PKCS#7 wrapper is discarded and reading the key returns
+-	  just the payload.  If it isn't, adding the key will fail with an
+-	  error.
+-
+-	  This is intended for testing the PKCS#7 parser.
+ 
+ config SIGNED_PE_FILE_VERIFICATION
+ 	bool "Support for PE file signature verification"
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index 4ce9d62d5..1f1ab08ff 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -581,12 +581,6 @@ config DYNAMIC_EVENTS
+ config PROBE_EVENTS
+ 	def_bool n
+ 
+-config BPF_KPROBE_OVERRIDE
+-	bool "Enable BPF programs to override a kprobed function"
+-	default n
+-	help
+-	 Allows BPF to override the execution of a probed function and
+-	 set a different return value.  This is used for error injection.
+ 
+ config FTRACE_MCOUNT_RECORD
+ 	def_bool y
+-- 
+2.25.1
+
