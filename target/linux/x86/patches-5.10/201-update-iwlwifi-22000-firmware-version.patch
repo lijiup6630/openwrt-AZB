@@ -1,4 +1,13 @@
-Index: linux-5.10.108/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+Author: Ji Li <liji@huachen.link>
+Date:   Thu Jun 23 16:56:44 2022 +0800
+
+    wifi: iwlwifi: fw: add new firmware version support for ax211
+    
+    we use a high version that to support 
+    ax211, so just modify the IWL_22000_UCODE_API_MAX here.
+    
+    Signed-off-by: Ji Li <liji@huachen.link>
+---
 ===================================================================
 --- linux-5.10.108.orig/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
 +++ linux-5.10.108/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
