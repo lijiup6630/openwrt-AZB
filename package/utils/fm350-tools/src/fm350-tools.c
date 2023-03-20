@@ -11,6 +11,10 @@
 #define CONN_FM350_CMD5 "atcmdtool -d /dev/ttyUSB0 AT+CGACT=1,0" //激活pdn
 #define CONN_FM350_CMD6 "atcmdtool -d /dev/ttyUSB0 AT+CGPADDR=0" //拨号开启
 
+#define CONN_FM350_CMD_GET_IMEI "atcmdtool -d /dev/ttyUSB0 at+cgsn?" //获取imei
+#define CONN_FM350_CMD_GET_SN "atcmdtool -d /dev/ttyUSB0 at+cfsn?" //获取sn
+#define CONN_FM350_CMD_GET_CGMR "atcmdtool -d /dev/ttyUSB0 at+cgmr?" //获取sn
+
 int get_shell_output(char *cmd, char *buffer, int length)
 {
     FILE *fp;   
@@ -63,10 +67,10 @@ int check_sim_card_ready()
 
 void set_fm350_module_info_to_uci()
 {
-    char set_fm350_cmd0[100] = "uci set lte5g.fm350=module";
-    char set_fm350_cmd1[100] = "uci set lte5g.fm350.apn=0,\"IPV4V6\",\"CMNET\"";
+    char set_fm350_cmd0[100] = "uci set lte5g.fm350=lte5g_section";
+    //char set_fm350_cmd1[200] = "uci set lte5g.fm350.apn=CMNET";
     system(set_fm350_cmd0);
-    system(set_fm350_cmd1);
+    //system(set_fm350_cmd1);
     /*写入SIM卡就绪的状态*/
     if(1 == check_sim_card_ready())
         system("uci set lte5g.fm350.sim=1");
@@ -107,7 +111,10 @@ void set_fm350_connect()
     char fm350_apn[80] = {0};
     char set_fm350_apn_cmd[200] = {0};
     get_shell_output("uci get lte5g.fm350.apn", fm350_apn, sizeof(fm350_apn));
-    sprintf(set_fm350_apn_cmd, "%s%s", "atcmdtool -d /dev/ttyUSB0 AT+CGDCONT=", fm350_apn);
+    fm350_apn[strlen(fm350_apn) - 1] = '\\';
+    fm350_apn[strlen(fm350_apn)] = '\"';
+    sprintf(set_fm350_apn_cmd, "%s%s", "atcmdtool -d /dev/ttyUSB0 AT+CGDCONT=0,\\\"IPV4V6\\\",\\\"", fm350_apn);
+    printf("%s\n", set_fm350_apn_cmd);
     system(set_fm350_apn_cmd);
     
     /*激活pdn*/
@@ -133,23 +140,70 @@ void set_fm350_connect()
     char uci_fm350_set_ip_cmd[80] = {0};
     sprintf(uci_fm350_set_ip_cmd, "%s%s", "uci set network.wan10.ipaddr=", ip_act);
     system(uci_fm350_set_ip_cmd);
+
+    system("uci commit");
+}
+
+void get_imei_sn_firmware_other_info()
+{
+    char fm350_imei[80] = {0};
+    char fm350_imei_cmd[200] = {0};
+
+    char fm350_sn[80] = {0};    
+    char fm350_sn_cmd[200] = {0};
+
+    char fm350_cgmr[80] = {0};    
+    char fm350_cgmr_cmd[200] = {0};
+
+    char fm350_ip[80] = {0};
+    char fm350_ip_cmd[200] = {0};
+
+    get_shell_output(CONN_FM350_CMD_GET_IMEI" | grep +CGSN: | cut -c 9-23", fm350_imei, sizeof(fm350_imei));
+    sprintf(fm350_imei_cmd, "%s%s", "uci set lte5g.fm350.imei=", fm350_imei);
+    system(fm350_imei_cmd);
+
+    get_shell_output(CONN_FM350_CMD_GET_SN" | grep +CFSN: | cut -c 9-18", fm350_sn, sizeof(fm350_sn));
+    sprintf(fm350_sn_cmd, "%s%s", "uci set lte5g.fm350.sn=", fm350_sn);
+    system(fm350_sn_cmd);
+
+    get_shell_output(CONN_FM350_CMD_GET_CGMR" | grep +CGMR: | cut -c 9-30", fm350_cgmr, sizeof(fm350_cgmr));
+    sprintf(fm350_cgmr_cmd, "%s%s", "uci set lte5g.fm350.cgmr=", fm350_cgmr);
+    system(fm350_cgmr_cmd);
+
+    get_shell_output("uci get network.wan10.ipaddr", fm350_ip, sizeof(fm350_ip));
+    sprintf(fm350_ip_cmd, "%s%s", "uci set lte5g.fm350.ipaddr=", fm350_ip);
+    system(fm350_ip_cmd);
+    
+    system("uci commit");
 }
 
 int main(int argc, char **argv)
 {
-    /*获取rndis网络节点名称*/
-    char ethport[5] = {0};
-    get_rndis_ethport(ethport);
-    ethport[sizeof(ethport) - 1] = 0;
-    
-    /*配置uci将rndis网口作为wan口*/
-    set_fm350_to_wan(ethport);
+    if((0 == strcmp("status", argv[1])))
+    {
+        get_imei_sn_firmware_other_info();
+        return 0;
+    }
 
-    /*读取模组信息并写入lte5g uci文件*/
-    set_fm350_module_info_to_uci();
+    if((0 == strcmp("connect", argv[1])))
+    {
+        /*获取rndis网络节点名称*/
+        char ethport[5] = {0};
+        get_rndis_ethport(ethport);
+        ethport[sizeof(ethport) - 1] = 0;
+        
+        /*配置uci将rndis网口作为wan口*/
+        set_fm350_to_wan(ethport);
 
-    /*拨号*/
-    set_fm350_connect();
+        /*读取模组信息并写入lte5g uci文件*/
+        set_fm350_module_info_to_uci();
+
+        /*拨号*/
+        set_fm350_connect();
+
+        /*重启网络*/
+        system("/etc/init.d/network restart");
+    }
 
     return 0;
 }

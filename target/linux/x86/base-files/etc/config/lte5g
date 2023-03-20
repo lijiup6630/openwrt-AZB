@@ -1,0 +1,6 @@
+config lte5g_section 'fm350'
+	option imei '1231231231330'
+
+config model_section 'MODEL'
+	option bridge '0'
+
