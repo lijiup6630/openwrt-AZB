@@ -26,6 +26,11 @@ function button.write(self, section, value)
     luci.sys.exec("/usr/sbin/fm350-tools connect") 
 end
 
+button = s:option(Button, "_setwan", "WAN")
+function button.write(self, section, value)
+    luci.sys.exec("/usr/sbin/fm350-tools aswan") 
+end
+
 -- m:section(SimpleSection).template="lte5g"
 
 -- local apply = luci.http.formvalue("cbi.apply")

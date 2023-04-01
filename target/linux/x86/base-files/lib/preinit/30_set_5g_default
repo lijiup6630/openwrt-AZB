@@ -1,0 +1,12 @@
+# Copyright (C) 2018 OpenWrt.org
+
+set_5g_default() {
+	if [ -f "/etc/config/lte5g" ]; then
+		uci set lte5g.fm350.imei=0
+    	uci set lte5g.fm350.sn=0
+    	uci set lte5g.fm350.cgmr==0
+    	uci set network.wan10.ipaddr=0
+	fi
+}
+
+boot_hook_add preinit_main set_5g_default

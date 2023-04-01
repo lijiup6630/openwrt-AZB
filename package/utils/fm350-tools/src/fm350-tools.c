@@ -177,6 +177,16 @@ void get_imei_sn_firmware_other_info()
     system("uci commit");
 }
 
+void set_route()
+{
+    /*获取和设置ip*/
+    char fm350_ip[80] = {0};
+    char set_fm350_route_cmd[200] = {0};
+    get_shell_output("uci get lte5g.fm350.ipaddr", fm350_ip, sizeof(fm350_ip));
+    sprintf(set_fm350_route_cmd, "%s%s", " route add default gw ", fm350_ip);
+    system(set_fm350_route_cmd);
+}
+
 int main(int argc, char **argv)
 {
     if((0 == strcmp("status", argv[1])))
@@ -204,6 +214,9 @@ int main(int argc, char **argv)
         /*重启网络*/
         system("/etc/init.d/network restart");
     }
+
+    if((0 == strcmp("aswan", argv[1])))
+        set_route();
 
     return 0;
 }
