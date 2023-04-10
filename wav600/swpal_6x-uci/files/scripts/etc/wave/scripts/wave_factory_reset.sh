@@ -290,7 +290,8 @@ function full_reset(){
 		done
 		local station_supported=`is_station_supported $phy`
 		if [ $station_supported -eq 1 ]; then
-			create_station "$iface_idx"
+			#create_station "$iface_idx"
+			echo "deny create sta mode wifi"
 		fi
 
 		iface_idx=$((iface_idx+2))
