@@ -1,0 +1,27 @@
+--- a/yang/ietf-ip@2014-06-16.yang	2023-04-20 16:30:27.661899931 +0800
++++ b/yang/ietf-ip@2014-06-16.yang	2023-04-20 16:31:50.411085119 +0800
+@@ -174,6 +174,19 @@
+            depends on the interface's type.";
+         reference "RFC 791: Internet Protocol";
+       }
++      
++      leaf ip {                                                    
++          type inet:ipv4-address-no-zone;                            
++          description                                                
++            "The IPv4 address on the interface.";                    
++      }
++      leaf prefix-length {                                       
++            type uint8 {                                             
++              range "0..32";                                         
++            }                                                        
++            description                                              
++              "The length of the subnet prefix.";                    
++      }        
+       list address {
+         key "ip";
+         description
+@@ -642,3 +655,4 @@
+     }
+   }
+ }
++

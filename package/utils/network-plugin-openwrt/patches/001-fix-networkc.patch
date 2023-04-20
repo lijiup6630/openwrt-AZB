@@ -1,0 +1,40 @@
+--- a/src/network.c	2023-04-19 16:36:25.342012788 +0800
++++ b/src/network.c	2023-04-20 16:35:00.073075387 +0800
+@@ -3,7 +3,7 @@
+ #include <string.h>
+ #include <sys/stat.h>
+ #include <sys/wait.h>
+-
++#include<stdlib.h>
+ #include <json-c/json.h>
+ 
+ #include <sysrepo.h>
+@@ -66,14 +66,14 @@
+ 	{INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv6/enabled", "network.%s.enabled", NULL,
+ 	 NULL, transform_data_boolean_to_zero_one_transform, transform_data_zero_one_to_boolean_transform, true, true},
+ 
+-	{INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv4/address[ip='%s']/ip", "network.%s.ipaddr", NULL,
+-	 transform_path_address_cb, NULL, NULL, false, false},
++	{INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv4/ip", "network.%s.ipaddr", NULL,
++	 NULL, NULL, NULL, false, false},
+ 	/* netmask leaf is dependent on the `ipv4-non-contiguous-netmasks` feature */
+-	{INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv4/address[ip='%s']/prefix-length", "network.%s.netmask", NULL,
+-	 transform_path_address_cb,
++	{INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv4/prefix-length", "network.%s.netmask", NULL,
++	 NULL,
+ 	 transform_data_ipv4_prefixlen_to_netmask_transform, transform_data_ipv4_netmask_to_prefixlen_transform, true, true},
+-	{INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv4/address[ip='%s']/prefix-length", "network.%s.ip4prefixlen", NULL,
+-	 transform_path_address_cb, NULL, NULL, false, false},
++	{INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv4/prefix-length", "network.%s.ip4prefixlen", NULL,
++	 NULL, NULL, NULL, false, false},
+ 
+ 	// {INTERFACE_XPATH_TEMPLATE "/ietf-ip:ipv6/address[ip='%s']/ip", "network.%s.ip6addr", NULL,
+ 	//  transform_path_address_cb, transform_data_ipv6_add_prefixlen_transform, transform_data_ipv6_strip_prefixlen_transform, true, true},
+@@ -466,6 +466,7 @@
+ 		}
+ 
+ 		srpo_uci_commit("network");
++		system("service network restart");
+ 	}
+ 
+ 	goto out;
