@@ -32,6 +32,7 @@ ROOTPART:=$(call qstrip,$(CONFIG_TARGET_ROOTFS_PARTNAME))
 ROOTPART:=$(if $(ROOTPART),$(ROOTPART),PARTUUID=$(IMG_PART_SIGNATURE)-02)
 GPT_ROOTPART:=$(call qstrip,$(CONFIG_TARGET_ROOTFS_PARTNAME))
 GPT_ROOTPART:=$(if $(GPT_ROOTPART),$(GPT_ROOTPART),PARTUUID=$(shell echo $(IMG_PART_DISKGUID) | sed 's/00$$/02/'))
+GPT_EFIPART:=$(if $(GPT_EFIPART),$(GPT_EFIPART),PARTUUID=$(shell echo $(IMG_PART_DISKGUID) | sed 's/00$$/01/'))
 
 GRUB_TIMEOUT:=$(call qstrip,$(CONFIG_GRUB_TIMEOUT))
 GRUB_TITLE:=$(call qstrip,$(CONFIG_GRUB_TITLE))
@@ -73,6 +74,7 @@ define Build/grub-config
 		-e 's#@TERMINAL_CONFIG@#$(strip $(GRUB_TERMINAL_CONFIG))#g' \
 		-e 's#@ROOTPART@#root=$(ROOTPART) rootwait#g' \
 		-e 's#@GPT_ROOTPART@#root=$(GPT_ROOTPART) rootwait#g' \
+		-e 's#@GPT_EFIPART@#root=$(GPT_EFIPART) rootwait#g' \
 		-e 's#@CMDLINE@#$(BOOTOPTS) $(GRUB_CONSOLE_CMDLINE)#g' \
 		-e 's#@TIMEOUT@#$(GRUB_TIMEOUT)#g' \
 		-e 's#@TITLE@#$(GRUB_TITLE)#g' \
