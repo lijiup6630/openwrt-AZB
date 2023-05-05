@@ -6,6 +6,61 @@
 
 用ndpi来进行流量分析。
 
+
+
+#### 编译
+
+首先下载nDPI的代码：
+
+```
+git clone https://gitee.com/codergeek/nDPI.git
+```
+
+在OpenWrt系统上编译，有关SDK的配置参考DPDK编译文档。
+
+另外编译前需要提前准备HOST环境，如下所示：
+
+```
+# lib下
+ln -s libpthread.so.0 libpthread.so
+cp /usr/lib/gcc/x86_64-openwrt-linux-gnu/11.2.0/libmvec.so.1 /lib/
+```
+
+同时需要注意libtool工具，/usr/bin/libtoolize，需要复制一份为libtool。
+
+同时编译nDPI需要libpcap的头文件，但是OpenWrt默认不会安装，需要从源码中复制：
+
+```
+cp pcap.h /usr/include/
+cp -rf pcap /usr/include/
+```
+
+编译：
+
+```
+./autogen.sh
+make
+make install
+```
+
+这里可能会提示install-sh没有权限，直接chmod 777 install-sh即可。
+
+编译完之后编译应用程序：
+
+```
+root@OpenWrt:/mnt/nDPI#cd example/
+root@OpenWrt:/mnt/nDPI/example# make
+gcc -fPIC -DPIC -I../src/include -W -Wall -Wno-unused-parameter -Wno-unused-function -Wno-address-of-packed-member  -O2   -pthread  -c reader_util.c -o reader_util.o
+ar rsv libndpiReader.a reader_util.o
+ar: creating libndpiReader.a
+a - reader_util.o
+gcc -fPIC -DPIC -I../src/include -W -Wall -Wno-unused-parameter -Wno-unused-function -Wno-address-of-packed-member  -O2   -pthread  -c ndpiReader.c -o ndpiReader.o
+gcc -fPIC -DPIC -I../src/include -W -Wall -Wno-unused-parameter -Wno-unused-function -Wno-address-of-packed-member  -O2   -pthread  ndpiReader.o libndpiReader.a ../src/lib/libndpi.a -lpcap -lm   -pthread -o ndpiReader
+root@OpenWrt:/mnt/nDPI/example# make install
+```
+
+
+
 #### 测试
 
 PC上联OpenWrt的LAN，然后OpenWrt的WAN用于上网，然后执行：
