@@ -67,6 +67,9 @@ dirclean: targetclean clean
 toolchain_rebuild_check:
 	$(SCRIPT_DIR)/check-toolchain-clean.sh
 
+generate_sbl_img:
+	/bin/bash $(SCRIPT_DIR)/generate_recovery_update_support_img.sh
+
 cacheclean:
 ifneq ($(CONFIG_CCACHE),)
 	$(STAGING_DIR_HOST)/bin/ccache -C
