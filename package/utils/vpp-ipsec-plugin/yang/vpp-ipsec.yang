@@ -1,0 +1,44 @@
+module vpp-ipsec {
+    prefix vpp-ipsec;
+    namespace "urn:vpp-ipsec";
+
+    container ipsec {
+        description "Configuration container of the ipsec.";
+
+        leaf localaddr {
+            type string;
+        }
+
+        leaf remoteaddr {
+            type string;
+        }
+
+        leaf min-childlocalts {
+            type string;
+        }
+
+        leaf max-childlocalts {
+            type string;
+        }
+
+        leaf min-childremotets {
+            type string;
+        }
+
+        leaf max-childremotets {
+            type string;
+        }
+
+        leaf ipip0-addr {
+            type string;
+        }
+
+        leaf interface-name {
+            type string;
+        }
+
+        leaf is-initiator {
+            type string;
+        }
+    }
+}

@@ -1,0 +1,24 @@
+module vpp-vxlan {
+    prefix vpp-vxlan;
+    namespace "urn:vpp-vxlan";
+
+    container vxlan {
+        description "Configuration container of the vxlan.";
+
+        leaf src {
+            type string;
+        }
+
+        leaf dst {
+            type string;
+        }
+
+        leaf vni {
+            type string;
+        }
+
+        leaf bri-InterfaceName {
+            type string;
+        }
+    }
+}

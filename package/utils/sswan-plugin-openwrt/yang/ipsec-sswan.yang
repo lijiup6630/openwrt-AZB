@@ -1,0 +1,43 @@
+module ipsec-sswan {
+    prefix ipsec;
+    namespace "urn:ipsec-sswan";
+    
+    import ietf-inet-types {
+        prefix inet;
+    }
+
+    container ipsec {
+        description "Configuration container of the ipsec.";
+        leaf name {
+            type string;
+        }
+
+        leaf localaddrs {
+            type string;
+        }
+
+        leaf remoteaddrs {
+            type string;
+        }
+        
+        leaf mode {
+            type string;
+        }
+
+        leaf childlocalts {
+            type string;
+        }
+
+        leaf childremotets {
+            type string;
+        }
+
+        leaf secrets {
+            type string;
+        }
+
+        leaf enable {
+            type string;
+        }
+    }
+}
