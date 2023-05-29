@@ -1,6 +1,6 @@
 # Netopeer使用说明
 ## 环境
-使用的config为sdwan.config，正常编译即可
+使用openwrt-config/20230523_sdwan.config配置文件编译出带有sdwan环境的包
 在使用前需要先加载network相关的yang模型
 
 ``` 

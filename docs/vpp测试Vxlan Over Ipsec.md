@@ -18,7 +18,7 @@ connections {
                 }
                 children {
                         host-host {
-								local_ts = 192.168.0.1/24[udp/4789-65535]
+				local_ts = 192.168.0.1/24[udp/4789-65535]
                                 esp_proposals = aes128-sha1-modp2048
                                 mode = transport
                         }
@@ -79,9 +79,9 @@ connections {
                 }
                 children {
                         host-host {
-								local_ts = 192.168.0.2/24[udp/4789-65535]
+				local_ts = 192.168.0.2/24[udp/4789-65535]
                                 esp_proposals = aes128-sha1-modp2048
-								mode = transport
+				mode = transport
                         }
                 }
                 version = 2
