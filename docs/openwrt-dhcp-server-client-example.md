@@ -20,7 +20,7 @@
 
 将虚拟机R0配置双网卡，其中一个网卡作为WAN(映射到系统中是eth0)，另外一个网卡添加到虚拟机网桥LAN1中，虚拟机R0的配置如下所示：
 
-![](\pic\DHCP1.png)
+![](.\pic\DHCP1.png)
 
 其中OpenWrt的配置如下所示：
 
@@ -66,7 +66,7 @@ config interface 'wan6'
 
 虚拟机PC1配置单网卡即可，将唯一的网卡添加到虚拟机网桥LAN1中，这样相当于PC1的eth0和R0的eth1在同一个私网中了。虚拟机PC1的配置如下所示：
 
-![](\pic\DHCP1.png)
+![](.\pic\DHCP2.png)
 
 其中OpenWrt的配置如下所示：
 
