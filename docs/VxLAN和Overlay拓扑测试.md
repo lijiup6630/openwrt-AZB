@@ -8,7 +8,7 @@
 
 #### 1. 拓扑结构
 
-![image-20220406215720262](E:\openwrt-x86-文档\intelopenwrt-document\pic\image-20220406215720262-16492534416831.png)
+![image-20220406215720262](.\pic\image-20220406215720262-16492534416831.png)
 
 PC1和PC2不在同一个LAN中，我们建立vxlan隧道，让PC1和PC2互通。
 

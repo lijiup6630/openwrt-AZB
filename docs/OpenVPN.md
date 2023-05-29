@@ -4,7 +4,7 @@
 
 #### 1.搭建环境
 
-
+![](https://openwrt.org/_media/docs/guide-user/network/openvpn.jpeg?w=800&tok=2265b0)
 
 #### 2. openvpn认证生成
 
@@ -214,6 +214,10 @@ config route 'net2'
 ```
 
 
+更改完配置后重启下vpn服务，如下所示：
+```
+/etc/init.d/openvpn restart
+```
 
 #### 6. Client PCs
 

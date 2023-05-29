@@ -81,7 +81,7 @@ root@OpenWrt:/etc/config#
 
 这里输入用户名密码就进去了。
 
-![image-20220425010416017](E:\openwrt-x86-文档\intelopenwrt-document\pic\image-20220425010416017.png)
+![image-20220425010416017](\pic\image-20220425010416017.png)
 
 可以选择执行命令，命令行之类的远程管理操作了。
 
