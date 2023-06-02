@@ -1,5 +1,19 @@
 用于启动ramdisk及内核相关的组件，已集成到OpenWrt中。
 
+#### 1 使能OpenWrt的ramdisk
+
+OpenWrt的menuconfig使能编译ramdisk选项：
+
+```
+Target Images --->
+	[*] ramdisk --->
+		Compression (gzip)  --->
+```
+
+如果不需要的话去掉。当使能此选项时，镜像会自带ramdisk包。
+
+#### 2 启动参数修改
+
 启动menu如下所示：
 
 ```
