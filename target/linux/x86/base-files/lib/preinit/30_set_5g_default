@@ -6,6 +6,7 @@ set_5g_default() {
     	uci set lte5g.fm350.sn=0
     	uci set lte5g.fm350.cgmr==0
     	uci set network.wan10.ipaddr=0
+		uci set firewall.@zone[1].network='wan wan6 wan10'
 	fi
 }
 
