@@ -108,6 +108,7 @@ int get_ip_func(char* source, char* buf)
 void set_fm350_connect()
 {
     /*获取和设置apn*/
+    char cmd_log[100] = {0};
     char fm350_apn[80] = {0};
     char set_fm350_apn_cmd[200] = {0};
     get_shell_output("uci get lte5g.fm350.apn", fm350_apn, sizeof(fm350_apn));
@@ -116,10 +117,12 @@ void set_fm350_connect()
     sprintf(set_fm350_apn_cmd, "%s%s", "atcmdtool -d /dev/ttyUSB0 AT+CGDCONT=0,\\\"IPV4V6\\\",\\\"", fm350_apn);
     printf("%s\n", set_fm350_apn_cmd);
     system(set_fm350_apn_cmd);
-    
+    sprintf(cmd_log, "echo %s >>/tmp/log/fm350.log", set_fm350_apn_cmd);
+    system(cmd_log);
+    sleep(20);
     /*激活pdn*/
     system("atcmdtool -d /dev/ttyUSB0 AT+CGACT=1,0");
-
+    sleep(40);
     /*获取IP*/
     char fm350_ip[80] = {0};
     char ip_act[20] = {0};
@@ -140,7 +143,8 @@ void set_fm350_connect()
     char uci_fm350_set_ip_cmd[80] = {0};
     sprintf(uci_fm350_set_ip_cmd, "%s%s", "uci set network.wan10.ipaddr=", ip_act);
     system(uci_fm350_set_ip_cmd);
-
+    sprintf(cmd_log, "echo %s >>/tmp/log/fm350.log", uci_fm350_set_ip_cmd);
+    system(cmd_log);
     system("uci commit");
 }
 

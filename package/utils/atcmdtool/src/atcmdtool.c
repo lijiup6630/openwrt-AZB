@@ -14,6 +14,8 @@
 #include <termios.h>
 #include <unistd.h>
 
++#define ATE_REPORT
+
 #ifndef DEV_MAXSIZE
 #define DEV_MAXSIZE 0x10
 #endif
@@ -23,7 +25,7 @@
 #endif
 
 #ifndef LINE_MAXSIZE
-#define LINE_MAXSIZE 0x400
+#define LINE_MAXSIZE 0x4000
 #endif
 
 #ifndef RESP_MAXSIZE
@@ -73,8 +75,10 @@ int main(int argc, char *argv[]) {
 
 //--------------------------------------------------------------------------
 static void serialOpen(int *ifd, char *ins, int argc, char *argv[]) {
-  char port[] = "/dev/ttyUSB1";
+  char port[DEV_MAXSIZE];
   int baud = 115200, tmout = 10;
+
+  snprintf(port, DEV_MAXSIZE - 1, "/dev/ttyUSB1");
   if (argc == 1 || (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))) {
     fprintf(stderr,
             "Usage:  %s [-b RATE{=%d}] [-t TMOUT{=%d}s] [[-d] "
@@ -109,9 +113,11 @@ static void serialOpen(int *ifd, char *ins, int argc, char *argv[]) {
       continue;
     } else if (k[0] == '+') {
       snprintf(ins, INSTRUCTION_MAXSIZE - 1, "at%s\r", k);
+      fprintf(stderr, "[cmd] %s \n", ins);
       break;
     } else if (!strncmp(k, "at", 2) || !strncmp(k, "AT", 2)) {
       snprintf(ins, INSTRUCTION_MAXSIZE - 1, "%s\r", k);
+      fprintf(stderr, "[cmd] %s \n", ins);
       break;
     } else if (!strcmp(k, "-v") || !strcmp(k, "--version")) {
       fprintf(stderr, "Built %s at [%s, %s]\n", argv[0], __DATE__, __TIME__);
