@@ -1,3 +1,9 @@
+
+OpenWrt需要预先使能：
+```
+CONFIG_PACKAGE_kmod-bonding=y
+```
+
 #### 1. 实现目的
 
 将AZB板子上的两个口做BOND，模式配置为balance-rr。两个口分别上联交换机，并且和交换机ping通信。

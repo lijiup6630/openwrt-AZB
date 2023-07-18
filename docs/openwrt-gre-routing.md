@@ -3,6 +3,13 @@
 
 
 #### 1. 说明
+OpenWrt应至少使能以下选项：
+```
+CONFIG_PACKAGE_kmod-gre=y
+CONFIG_PACKAGE_kmod-gre6=y
+CONFIG_PACKAGE_gre=y
+CONFIG_PACKAGE_grep=y
+```
 
 #### 2. 网络拓扑及说明
 

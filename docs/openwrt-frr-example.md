@@ -2,6 +2,19 @@
 
 #### 1. 说明
 
+OpenWrt系统自带frr工具，需要至少提前使能：
+```
+CONFIG_PACKAGE_frr=y
+CONFIG_PACKAGE_frr-libfrr=y
+CONFIG_FRR_INTERNAL=y
+CONFIG_FRR_NO_SNMP=y
+CONFIG_PACKAGE_frr-bfdd=y
+CONFIG_PACKAGE_frr-bgpd=y
+CONFIG_PACKAGE_frr-vtysh=y
+CONFIG_PACKAGE_frr-watchfrr=y
+CONFIG_PACKAGE_frr-zebra=y
+```
+
 #### 2.网络拓扑及测试说明
 
 R1和R2的WAN口是直连的。

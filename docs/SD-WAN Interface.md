@@ -1,4 +1,17 @@
 # Netopeer使用说明
+
+OpenWrt应至少使能以下选项：
+```
+CONFIG_PACKAGE_libyang=y
+CONFIG_PACKAGE_yanglint=y
+CONFIG_PACKAGE_libsysrepo=y
+CONFIG_PACKAGE_sysrepo=y
+CONFIG_PACKAGE_sysrepocfg=y
+CONFIG_PACKAGE_sysrepoctl=y
+CONFIG_PACKAGE_netopeer2-cli=y
+CONFIG_PACKAGE_netopeer2-server=y
+```
+
 ## 环境
 使用openwrt-config/20230523_sdwan.config配置文件编译出带有sdwan环境的包
 在使用前需要先加载network相关的yang模型

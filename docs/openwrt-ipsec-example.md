@@ -1,5 +1,14 @@
 ### OpenWrt的IPsec功能测试
 #### 1. 说明
+OpenWrt应至少使能以下选项：
+```
+CONFIG_PACKAGE_kmod-ipt-ipsec=y
+CONFIG_PACKAGE_kmod-ipsec=y
+CONFIG_PACKAGE_kmod-ipsec4=y
+CONFIG_PACKAGE_kmod-ipsec6=y
+CONFIG_PACKAGE_iptables-mod-ipsec=y
+CONFIG_PACKAGE_strongswan-ipsec=y
+```
 
 #### 2. 网络拓扑及测试说明
 ![](https://p.qlogo.cn/hy_personal/3e28f14aa051684237d22719f9405f144d44a356249fcc00af7b44d8db513a4a/0.png)
